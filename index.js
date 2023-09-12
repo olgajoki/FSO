@@ -19,7 +19,7 @@ let persons = [
   },
   {
     name: "Mary Poppendieck",
-    number: "39-23-6423122",
+    number: "39-23-642312",
     id: 4,
   },
 ];
@@ -28,6 +28,17 @@ app.get("/api/persons", (req, res) => {
   res.json(persons);
 });
 
+app.get("/info", (req, res) => {
+  const header = res.getHeaders([1]);
+  console.log(header, "jep");
+  res.send(`Phoneboo has info for people ${persons.length}`);
+});
+
+/*
+fetch("http://localhost:3001/info").then((resp) => {
+  console.log(resp.headers.get("Date"));
+});
+*/
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
