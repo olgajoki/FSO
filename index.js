@@ -29,9 +29,15 @@ app.get("/api/persons", (req, res) => {
 });
 
 app.get("/info", (req, res) => {
-  const header = res.getHeaders([1]);
-  console.log(header, "jep");
-  res.send(`Phoneboo has info for people ${persons.length}`);
+  //set date to headers
+  res.setHeader("Date", new Date().toUTCString());
+  //get date header
+  const dateHeader = res.get("Date");
+  console.log(dateHeader);
+
+  res.send(
+    `Phonebook has info for people ${persons.length} <br> ${dateHeader}`
+  );
 });
 
 /*
