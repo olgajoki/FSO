@@ -33,7 +33,7 @@ app.get("/api/persons", (req, res) => {
 app.get("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
   const person = persons.find((person) => person.id === id);
-  console.log(person.name);
+
   if (person) {
     res.json(person);
   } else {
@@ -52,6 +52,13 @@ app.get("/info", (req, res) => {
   res.send(
     `Phonebook has info for people ${persons.length} <br> ${dateHeader}`
   );
+});
+
+app.delete("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  persons = persons.filter((person) => person.id !== id);
+
+  res.status(204).end();
 });
 
 const PORT = 3001;
