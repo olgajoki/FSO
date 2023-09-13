@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+app.use(express.json());
 
 let persons = [
   {
@@ -54,11 +55,40 @@ app.get("/info", (req, res) => {
   );
 });
 
+//delete person by id
 app.delete("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
   persons = persons.filter((person) => person.id !== id);
 
   res.status(204).end();
+});
+
+//generate id for added person
+const generateId = () => {
+  const min = Math.ceil(5);
+  const max = Math.floor(99);
+  console.log(min, max);
+
+  return Math.floor(Math.random() * (max - min) + min);
+};
+
+//send data for new person
+app.post("/api/persons", (req, res) => {
+  const body = req.body;
+  console.log(body.name, "body");
+  if (!body.name) {
+    return res.status(400).json({
+      error: "name missing",
+    });
+  }
+
+  const person = {
+    name: body.name,
+    number: body.number || false,
+    id: generateId(),
+  };
+  persons = persons.concat(person);
+  res.json(person);
 });
 
 const PORT = 3001;
