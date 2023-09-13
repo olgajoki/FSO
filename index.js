@@ -24,10 +24,24 @@ let persons = [
   },
 ];
 
+//get all persons
 app.get("/api/persons", (req, res) => {
   res.json(persons);
 });
 
+//get person by id
+app.get("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const person = persons.find((person) => person.id === id);
+  console.log(person.name);
+  if (person) {
+    res.json(person);
+  } else {
+    res.status(404).end();
+  }
+});
+
+//get information about amount of persons
 app.get("/info", (req, res) => {
   //set date to headers
   res.setHeader("Date", new Date().toUTCString());
@@ -40,11 +54,6 @@ app.get("/info", (req, res) => {
   );
 });
 
-/*
-fetch("http://localhost:3001/info").then((resp) => {
-  console.log(resp.headers.get("Date"));
-});
-*/
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
