@@ -75,20 +75,35 @@ const generateId = () => {
 //send data for new person
 app.post("/api/persons", (req, res) => {
   const body = req.body;
-  console.log(body.name, "body");
+  console.log(body, "body");
   if (!body.name) {
     return res.status(400).json({
       error: "name missing",
+    });
+  } else if (!body.number) {
+    return res.status(400).json({
+      error: "number missing",
     });
   }
 
   const person = {
     name: body.name,
-    number: body.number || false,
+    number: body.number,
     id: generateId(),
   };
-  persons = persons.concat(person);
-  res.json(person);
+  //check if name is unique from other persons
+  const sameName = persons.find(
+    (uniqueName) => uniqueName.name === person.name
+  );
+
+  if (sameName) {
+    return res.status(400).json({
+      error: "name must be unique",
+    });
+  } else {
+    persons = persons.concat(person);
+    res.json(person);
+  }
 });
 
 const PORT = 3001;
