@@ -6,8 +6,10 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
-  },
+    "dev": "nodemon index.js",
+    "build:ui": "@powershell Remove-Item -Recurse -Force build && cd part2.6-2.10 && npm run build && @powershell Copy-Item build -Recurse ../fos_part3",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
+    },
   "author": "",
   "license": "ISC",
   "dependencies": {
